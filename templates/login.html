@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-wrap">
+  <div class="card glass auth-card">
+    <div class="auth-logo">🌸</div>
+    <h2>Welcome back</h2>
+    <p class="muted auth-sub">Sign in to your NeuroVed account</p>
+
+    <form method="post" class="form auth-form" novalidate>
+      <div class="field-group">
+        <label for="email">Email address</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉️</span>
+          <input id="email" name="email" type="email" required
+                 placeholder="you@example.com" autocomplete="email"/>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input id="password" name="password" type="password" required
+                 placeholder="••••••••" autocomplete="current-password"/>
+          <button type="button" class="eye-btn" onclick="togglePwd('password', this)">👁</button>
+        </div>
+      </div>
+
+      <button class="btn primary full large" type="submit">Sign In</button>
+    </form>
+
+    <p class="auth-foot muted small">
+      Don't have an account?
+      <a href="{{ url_for('auth.register') }}" class="link">Create one free →</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+</script>
+{% endblock %}

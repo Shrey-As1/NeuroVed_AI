@@ -1,0 +1,18 @@
+--- Base Grayscale (PSM 6) length 1390 ---
+° oe Kalin i . 7 Pag WE ga Institute of Medical Sciences sey Ww, M (KIMS SORT] S) ee OP CASE SHEET MRN : KIMS1023091 80735 aa Date : 20-03-2026 1519 W000 NE Decor Nem Dr, KANAV RSI | Patient's Name : Ms SHREYA Department Name ; EAR NOSE AND THROAT Sex/ Age: FEMALE /21 Years 6 Months? Days Conmabation Type 1 FIRST VIstT Contact No. : 7667273267 Head of Dept. : Dr. KABIKANTA SAMANTARAY Visit / Q. No. : OP-013 / 21 Unit / Unit Head Address : BHUBANESWAR Policy : t Y= a a a —— ee —— Weight: 70.0 KG 
+
+--- Otsu (PSM 6) length 1426 ---
+: ie Kalin i : . a We ga Institute of Medical Sciences geo i, M (KIMS SU S) Se” OP CASE SHEET MIRN : KIMS 102309) 80736 ——) Mate 2004 Dee ay SLT Dace Same: DE. KANAY Ist | Patient's Name: Ms SHRI Y \ Department Name: LAR SOSE AMID FHROAT Ses / Age: FEMALE 21 Vcars 6 Montha? Days Conautation Type: RST VISIT Contact No. + 7667273267 Yead of Nept. st KABIKANIA SAMANTARAY Visit Q. No. OP-012- 21 Voit Unit Head Address : BHUBANESWAR Policy: oo OE SES UR ONT oe Weight: 70.0 KG Description Dingaost Acu
+
+--- Adapt 21 (PSM 6) length 1024 ---
+ASA _ Kalinga Institute of Medical Sei en al sciences ey fo tec OP CASE SIEET are MIN : KIMS102309180735 7 : CCA bors Patient Doctor Name: Dr, KANAV RISISE + ient's N. Me Suey s Sex / Ay mee NESHREYA Department Name: EAR NOSE AND THROAT. _ Be FEMALE £21 Years 6 Months? Days Consutiation Type : FIRST VISIT : Ce Soot F ‘ontact No, 2 7687273267 Head of Nept. : DLKABIKANTA SAMANTARAY : Visit! Q.No,: 0P.013/21 Unit/Unlt Head : - . Address : BHUBANESWAR Policy : Weight: 70.0 KG : DIAGNOSIS ee ee Se a 
+
+--- Adapt 81 (PSM 6) length 951 ---
+Tt me bi yi wy Kalinga Insti ~ F Ey (K of Medical Sciences “ OP CASE SHEET zi MRN : KIMS102300180735 . : HW Ril Date : 20-03-2076 15:19 a Patlents Name: Ms SHREYA, Departesent Name ; EAR NOSE AND THROAT . Sex/ Age : FEMALE /21 Yoara 6 Months? Days Consultation Type : FIRST VISIT ax Contact No, : 7667273267 Head of Dept. : Dr. KABIKANTA SAMANTARAY ss Visit /Q. Ne: 0.013 /21 Unit / Unie ftead : ; Address : BHUBANESWAR Polley ; a eee © Weight: 70.0 KG Diagnosis | Description - Acute pharyngitis MCD
+
+--- CLAHE+Adapt81 (PSM 6) length 1128 ---
+Ye Kalinga Insti ited ae he xk ae a Institute . : ‘ ss ( Maca! Sciences 4 Ae MEN : KIMS102309180735 ‘eg « iz e UNE morte cata a» sexs “Name: Ms SHREYA Department Name : EAR NOSE AND THROAT 2 o. ‘Age: FEMALE /21 Veer 6 Montu? Days ‘Coneaktation Type : FIRST VISIT q er inet Ness 7667273267 Head of Dept. : DY. KABIKANTA SAMANTARAY ‘3 ™ ‘Visit 2 Q. Ne. 208-013 / 21 aw unit / Unte Head: ee ‘Address : BHUBANESWAR ae Patiey ¢ aN we. pa Weight: 70.0 KG tee 3 Pag ; . ; 2 ¥ SQ eee “— pomrioaa ep Pamnme te
+
+--- CLAHE+Adapt81_psm3 (PSM 3) length 709 ---
+—S  we Kalinga Institute of Medical Sciences “p¥%  OP CASE SHEET  MEN : KIMS102309180735 Date 20-03-2026 15:19  INA Doce Name: De,KANAY RIS  AT Patient's Name: Mz SHREYA, Department Name : EAR NOSE AND THRO/  Sex / Age : FEMALE /21 Years 6 Months? Days ‘Consultation Type : FIRST VISIT  Contact Ne, 2667273267 Head of Dept. : DL KABIKANTA SAMANTARAY Visit 7Q. Ne. : 0-013 /31 w lt Unt tad Address : BRUBANESWAR  ay. Frequency ei Duration |. BID (Two times a day). + 5 Days ‘Once Daily*<” 3 Week  ‘TID
+

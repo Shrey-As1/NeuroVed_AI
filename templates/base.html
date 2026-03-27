@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="NeuroVed AI — Gentle mental health support, beautifully organized."/>
+  <title>{{ title if title else "NeuroVed AI" }}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}"/>
+  <script defer src="{{ url_for('static', filename='js/sakura.js') }}"></script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <!-- Animated Mesh Background and Glass Overlay -->
+  <div class="bg-layer"></div>
+  <!-- Falling Leaves Canvas -->
+  <canvas id="sakura" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-2;"></canvas>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('landing') }}">
+      <div class="brand-mark">🌸</div>
+      <div>
+        <div class="brand-title">NeuroVed <span class="brand-ai">AI</span></div>
+        <div class="brand-sub">Gentle support · Organized care</div>
+      </div>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+
+    <nav class="nav" id="mainNav">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('dashboard') }}" class="navlink {% if request.endpoint == 'dashboard' %}active{% endif %}">
+          <span>🏠</span> Dashboard
+        </a>
+        <a href="{{ url_for('chat.page') }}" class="navlink {% if request.endpoint and 'chat' in request.endpoint %}active{% endif %}">
+          <span>💬</span> Chatbot
+        </a>
+        <a href="{{ url_for('storage.reports') }}" class="navlink {% if request.endpoint and 'storage' in request.endpoint %}active{% endif %}">
+          <span>🗂️</span> Storage
+        </a>
+        <a href="{{ url_for('analyzer.page') }}" class="navlink {% if request.endpoint and 'analyzer' in request.endpoint %}active{% endif %}">
+          <span>🔬</span> Analyzer
+        </a>
+        <a href="{{ url_for('hospitals.page') }}" class="navlink {% if request.endpoint == 'hospitals.page' %}active{% endif %}">
+          <span>📍</span> Pincode
+        </a>
+        <div class="nav-user">
+          <span class="nav-name">{{ current_user.full_name.split()[0] if current_user.full_name else 'You' }}</span>
+          <a href="{{ url_for('auth.logout') }}" class="navlink danger">Logout</a>
+        </div>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}" class="navlink">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="navlink primary-nav">Get Started</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap" id="flashWrap">
+          {% for cat, msg in messages %}
+            <div class="flash {{ cat }}">
+              <span>{{ msg }}</span>
+              <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-brand">🌸 <strong>NeuroVed AI</strong> &nbsp;·&nbsp; 2026</span>
+      <span class="footer-note">This app supports reflection. It is not a substitute for professional medical advice.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const toggle = document.getElementById('navToggle');
+    const nav = document.getElementById('mainNav');
+    if (toggle) toggle.addEventListener('click', () => nav.classList.toggle('open'));
+
+    // Auto-dismiss flash after 5s
+    setTimeout(() => {
+      const fw = document.getElementById('flashWrap');
+      if (fw) fw.style.opacity = '0';
+      setTimeout(() => { if (fw) fw.remove(); }, 600);
+    }, 5000);
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

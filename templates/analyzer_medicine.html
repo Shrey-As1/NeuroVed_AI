@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block head %}
+<script defer src="{{ url_for('static', filename='js/analyzer.js') }}"></script>
+{% endblock %}
+{% block content %}
+
+<div class="module-page-header">
+  <div>
+    <div class="breadcrumb">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a> ›
+      <a href="{{ url_for('analyzer.page') }}">Analyzer</a> › Medicine
+    </div>
+    <h2>💊 Medicine Analyzer</h2>
+    <p class="muted">Upload a medicine image — OCR extracts text and identifies the medicine</p>
+  </div>
+</div>
+
+
+
+<div class="analyzer-layout">
+
+  <!-- Upload form -->
+  <div class="card glass upload-card">
+    <h3>📤 Upload Medicine Image</h3>
+    <form class="form" method="post" enctype="multipart/form-data" id="analyzerForm">
+      <div class="file-drop-zone" id="dropZone">
+        <input name="image" type="file" id="analyzerFile" accept="image/*" required/>
+        <div class="drop-label" id="dropLabel">
+          <span class="drop-icon">🖼️</span>
+          <span>Drag &amp; drop or <label for="analyzerFile" class="link file-pick">browse image</label></span>
+          <span class="muted small">PNG, JPG, JPEG, WEBP, BMP — clear photos give best results</span>
+        </div>
+        <img id="imgPreview" class="img-preview" style="display:none" alt="Selected image preview"/>
+      </div>
+      <button class="btn primary full" type="submit" id="submitBtn">
+        🔍 Analyze Medicine
+      </button>
+    </form>
+  </div>
+
+  <!-- Results -->
+  {% if ocr_text or error %}
+  <div class="results-panel">
+
+    {% if error %}
+    <div class="flash danger">❌ {{ error }}</div>
+    {% endif %}
+
+    {% if image_filename %}
+    <div class="card glass">
+      <h3>🖼️ Uploaded Image</h3>
+      <img src="{{ url_for('static', filename='analyzed/' + image_filename) }}"
+           style="max-height: 200px; border-radius:14px; margin-top:10px; object-fit: contain;"
+           onerror="this.style.display='none'" alt="Uploaded medicine"/>
+    </div>
+    {% endif %}
+
+    {% if medicine_name %}
+    <div class="card glass result-highlight">
+      <h3>🏷️ Identified Medicine</h3>
+      <div class="med-name-badge">{{ medicine_name }}</div>
+      {% if search_url %}
+      <div style="margin-top:14px;">
+        <a class="btn primary" href="{{ search_url }}" target="_blank">
+          🔎 Search "{{ medicine_name }}" on Google
+        </a>
+      </div>
+      <p class="muted small" style="margin-top:8px;">
+        Click the button to view uses, dosage, and side effects on Google.
+      </p>
+      {% endif %}
+    </div>
+    {% elif ocr_text %}
+    <div class="card glass">
+      <p class="muted">Could not identify a specific medicine name from the image. Try a clearer photo.</p>
+    </div>
+    {% endif %}
+
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

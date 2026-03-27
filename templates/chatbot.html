@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script defer src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<style>
+  /* Fullscreen Chatbot Override */
+  .topbar, .footer { display: none !important; }
+  body { overflow: hidden; background: var(--mesh-2); }
+  .container { 
+    max-width: 100% !important; padding: 0 !important; margin: 0 !important; 
+    height: 100vh; display: flex; flex-direction: column; 
+  }
+  .chat-layout { 
+    height: 100vh; margin: 0; padding: 0; display: grid; 
+    grid-template-columns: 1fr 400px; gap: 0; align-items: stretch;
+  }
+  .chat-panel { 
+    height: 100%; border-radius: 0; border: none; 
+    box-shadow: none; background: rgba(255,255,255,0.3);
+  }
+  .chat-header {
+    border-radius: 0;
+    padding: 16px 32px;
+  }
+  /* Back button for fullscreen */
+  .back-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--white); border: 1px solid var(--glass-border-strong);
+    color: var(--text); text-decoration: none; font-size: 20px;
+    box-shadow: var(--shadow-sm); transition: all var(--transition);
+    margin-right: 16px;
+  }
+  .back-btn:hover { background: var(--accent); color: var(--white); transform: scale(1.1); }
+  .pred-panel { 
+    height: 100%; overflow-y: auto; padding: 24px; box-sizing: border-box; 
+    background: rgba(255,255,255,0.7); backdrop-filter: blur(24px); border-left: 1px solid var(--stroke);
+  }
+  @media (max-width: 1024px) {
+    .chat-layout { grid-template-columns: 1fr; display: flex; flex-direction: column; }
+    .pred-panel { flex: none; height: auto; border-left: none; border-top: 1px solid var(--stroke); }
+    .chat-panel { height: 60vh; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-layout">
+
+  <!-- Left: Chat panel -->
+  <div class="card glass chat-panel">
+    <div class="chat-header" style="position:relative;">
+      <div style="display:flex; align-items:center;">
+        <a href="{{ url_for('dashboard') }}" class="back-btn" title="Back to Dashboard">←</a>
+        <div>
+          <h2 style="margin:0;">💬 Chatbot</h2>
+          <div class="muted small">AI-powered · Voice enabled · Crisis aware</div>
+        </div>
+      </div>
+      <div class="source-badge" id="sourceBadge" style="display:none; position:absolute; top: 24px; right: 24px; transform: scale(0.85); opacity: 0.8;"></div>
+    </div>
+
+    <div id="chatBox" class="chatbox">
+      <div class="bubble bot">
+        Hi 🌸 I'm here to listen and support you. You can type or use the 🎙️ mic.
+        I'll respond thoughtfully and help you understand your emotions.
+      </div>
+    </div>
+
+    <div class="chatbar">
+      <textarea id="msg" rows="2" placeholder="Type your message, or click 🎙️ to speak…"></textarea>
+      <button id="mic"         class="btn icon-btn" type="button" title="Voice input">🎙️</button>
+      <button id="speakToggle" class="btn icon-btn" type="button" title="Toggle bot voice">🔊</button>
+      <button id="send"        class="btn primary"  type="button">Send</button>
+    </div>
+
+    <div id="statusBar" class="status-bar muted small" style="display:none"></div>
+  </div>
+
+  <!-- Right: Prediction panel -->
+  <div class="pred-panel" id="predPanel" style="display:none">
+
+    <div class="card glass pred-section">
+      <h3>🧠 Condition Analysis</h3>
+      <div class="pred-top">
+        <span class="pred-emotion" id="topEmotion">—</span>
+        <span class="pred-conf" id="topConf"></span>
+      </div>
+      <div class="risk-row">
+        <span class="muted small">Crisis risk:</span>
+        <div class="risk-bar-wrap">
+          <div class="risk-bar" id="riskBar"></div>
+        </div>
+        <span class="risk-val muted small" id="riskVal">—</span>
+      </div>
+    </div>
+
+    <div class="card glass pred-section">
+      <h3>📊 Probability Chart</h3>
+      <div class="chart-wrap">
+        <canvas id="emotionChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card glass pred-section" id="soothingSection" style="text-align: center; padding: 32px 24px; background: linear-gradient(135deg, rgba(237,233,254,0.6), rgba(204,251,241,0.6)); border-color: rgba(255,255,255,0.9);">
+      <div style="font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--accent); line-height: 1.6; margin-bottom: 8px;">
+        "Your story is not over. Even in the darkest moments, there is a resilient spark inside you waiting to shine again. Stay, and let tomorrow unfold."
+      </div>
+    </div>
+    
+    <div id="sourceDetail" class="muted small" style="text-align:right; font-size: 11px; margin-top: auto; padding-top: 16px; opacity: 0.5;"></div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+uploads/
+models/
+instance/
+artifacts/
+.vscode/
+data/
+*.pt
+*.bin

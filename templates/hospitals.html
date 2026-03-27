@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card glass">
+  <div class="chat-head">
+    <h2>Nearest Mental Health Help (by Pincode)</h2>
+    <div class="muted small">No API key • Uses India Post pincode lookup + Google Maps search</div>
+  </div>
+
+  <form method="post" class="form" style="margin-top:14px;">
+    <label>Enter 6-digit pincode</label>
+    <input name="pincode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+           placeholder="e.g., 700001" value="{{ pincode }}" required />
+    <button class="btn primary" type="submit">Find</button>
+  </form>
+
+  {% if error %}
+    <div class="flash danger" style="margin-top:14px;">{{ error }}</div>
+  {% endif %}
+
+  {% if area_label %}
+    <div style="margin-top:14px;">
+      <div class="muted">Detected area:</div>
+      <div><b>{{ area_label }}</b></div>
+    </div>
+
+    <div class="card" style="margin-top:14px; background: rgba(0,0,0,.12);">
+      <h3 style="margin-bottom:8px;">Open in Maps</h3>
+      <div class="row">
+        {% for l in map_links %}
+          <a class="btn" target="_blank" href="{{ l.url }}">{{ l.label }}</a>
+        {% endfor %}
+      </div>
+      <div class="muted small" style="margin-top:8px;">
+        Tip: open 2–3 links to get best nearby options.
+      </div>
+    </div>
+
+    <div class="table" style="margin-top:14px;">
+      <div class="thead" style="grid-template-columns: 1.2fr 1fr 1fr;">
+        <div>Post Office</div><div>Division</div><div>Region</div>
+      </div>
+
+      {% for po in post_offices %}
+      <div class="trow" style="grid-template-columns: 1.2fr 1fr 1fr;">
+        <div class="clip"><b>{{ po.name }}</b></div>
+        <div class="clip">{{ po.division }}</div>
+        <div class="clip">{{ po.region }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

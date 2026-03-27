@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block head %}
+<script defer src="{{ url_for('static', filename='js/analyzer.js') }}"></script>
+{% endblock %}
+{% block content %}
+
+<div class="module-page-header">
+  <div>
+    <div class="breadcrumb">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a> ›
+      <a href="{{ url_for('analyzer.page') }}">Analyzer</a> › Report
+    </div>
+    <h2>📋 Report Analyzer</h2>
+    <p class="muted">Upload a prescription or medical report — OCR extracts keywords for research</p>
+  </div>
+</div>
+
+
+
+<div class="analyzer-layout">
+
+  <!-- Upload form -->
+  <div class="card glass upload-card">
+    <h3>📤 Upload Report / Prescription</h3>
+    <form class="form" method="post" enctype="multipart/form-data" id="analyzerForm">
+      <div class="file-drop-zone" id="dropZone">
+        <input name="image" type="file" id="analyzerFile" accept="image/*" required/>
+        <div class="drop-label" id="dropLabel">
+          <span class="drop-icon">📋</span>
+          <span>Drag &amp; drop or <label for="analyzerFile" class="link file-pick">browse image</label></span>
+          <span class="muted small">Take a clear photo of your prescription or lab report</span>
+        </div>
+        <img id="imgPreview" class="img-preview" style="display:none" alt="Selected image preview"/>
+      </div>
+      <button class="btn primary full" type="submit" id="submitBtn">
+        🔍 Analyze Report
+      </button>
+    </form>
+  </div>
+
+  <!-- Results -->
+  {% if ocr_text or error %}
+  <div class="results-panel">
+
+    {% if error %}
+    <div class="flash danger">❌ {{ error }}</div>
+    {% endif %}
+
+    {% if annotated_text or ocr_text %}
+    <div class="card glass">
+      <h3>📝 Extracted Text (OCR)</h3>
+      <div class="ocr-text" style="line-height:1.6; font-family:monospace; white-space:pre-wrap; padding:15px; border-radius:8px; border: 1px solid rgba(255,255,255,0.2);">
+        {{ (annotated_text or ocr_text) | safe }}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if categorized_links %}
+    <div class="card glass result-highlight">
+      <h3>🏷️ Categorized Medical Insights</h3>
+      
+      <div style="display:flex; flex-direction:column; gap:20px; margin-top:15px;">
+        {% for category, links in categorized_links.items() %}
+          <div>
+            <h4 style="margin: 0 0 10px 0; color:#555; text-transform:uppercase; font-size:0.85em; letter-spacing:1px;">{{ category }}</h4>
+            <div class="keyword-cloud">
+              {% for item in links %}
+                <a class="keyword-tag" href="{{ item.url }}" target="_blank" title="Search {{ item.term }} on Google" style="text-decoration:none;">
+                  {{ item.term }} 🔍
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <p class="muted small" style="margin-top:20px;">
+        Click on any medical term to find out its meaning on Google.
+      </p>
+    </div>
+    {% elif ocr_text %}
+    <div class="card glass">
+      <p class="muted">No medical keywords could be extracted. Try a clearer image.</p>
+    </div>
+    {% endif %}
+
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero-section">
+  <!-- Left: CTA -->
+  <div class="card glass hero-card">
+    <div class="hero-badge">🌸 Mental Wellness Platform</div>
+    <h1>Soft support,<br><em>beautifully organized.</em></h1>
+    <p class="hero-desc">
+      Talk to an empathetic AI, detect emotional patterns, analyze medical records,
+      store prescriptions &amp; medicines, and find nearby mental health support — all in one calm space.
+    </p>
+    <div class="hero-btns">
+      <a class="btn primary large" href="{{ url_for('auth.register') }}">
+        ✨ Get Started Free
+      </a>
+      <a class="btn large" href="{{ url_for('auth.login') }}">
+        Login
+      </a>
+    </div>
+    <div class="hero-trust">
+      <span>🔒 Secure &amp; Private</span>
+      <span>🧠 AI-Powered</span>
+      <span>🌿 No Judgement</span>
+    </div>
+  </div>
+
+  <!-- Right: Feature list -->
+  <div class="hero-features">
+    <div class="feature-card">
+      <div class="fc-icon">💬</div>
+      <div>
+        <div class="fc-title">AI Chatbot</div>
+        <div class="fc-desc">Emotion detection, crisis support, Gemini-powered general answers</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon">🗂️</div>
+      <div>
+        <div class="fc-title">Storage Bot</div>
+        <div class="fc-desc">Separate vaults for reports &amp; medicines — organized &amp; sortable</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon">🔬</div>
+      <div>
+        <div class="fc-title">Analyzer</div>
+        <div class="fc-desc">OCR-powered medicine &amp; report analyzer with instant Google search</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon">📍</div>
+      <div>
+        <div class="fc-title">Pincode Finder</div>
+        <div class="fc-desc">Find nearest mental health hospitals by Indian pincode — no API key</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="fc-icon">🎙️</div>
+      <div>
+        <div class="fc-title">Voice Assistant</div>
+        <div class="fc-desc">Speak to the chatbot &amp; hear responses with built-in TTS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

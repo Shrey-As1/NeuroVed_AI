@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="module-page-header">
+  <div>
+    <div class="breadcrumb"><a href="{{ url_for('dashboard') }}">Dashboard</a> › Storage Bot › Reports</div>
+    <h2>🗂️ Report Storage</h2>
+    <p class="muted">Securely store your medical reports and prescriptions</p>
+  </div>
+  <a href="{{ url_for('storage.medicines') }}" class="btn">💊 View Medicines →</a>
+</div>
+
+<!-- Upload form -->
+<div class="card glass upload-card">
+  <h3>📤 Upload New Report</h3>
+  <form class="form upload-form" method="post"
+        action="{{ url_for('storage.upload', category='prescription') }}"
+        enctype="multipart/form-data">
+    <div class="upload-grid">
+      <div class="field-group">
+        <label>Report Title</label>
+        <input name="title" placeholder="e.g., Dr. visit — blood test"/>
+      </div>
+      <div class="field-group">
+        <label>Date</label>
+        <input name="date_taken" type="date"/>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Notes <span class="muted small">(optional)</span></label>
+      <textarea name="notes" rows="2" placeholder="Any details to remember..."></textarea>
+    </div>
+    <div class="field-group">
+      <label>File <span class="muted small">(image or PDF, max 10 MB)</span></label>
+      <div class="file-drop-zone" id="dropZone">
+        <input name="file" type="file" id="reportFile" accept="image/*,.pdf" required/>
+        <div class="drop-label">
+          <span class="drop-icon">📎</span>
+          <span>Drag &amp; drop or <label for="reportFile" class="link file-pick">browse</label></span>
+        </div>
+        <img id="reportPreview" class="img-preview" style="display:none" alt="Preview"/>
+      </div>
+    </div>
+    <button class="btn primary" type="submit">Upload Report</button>
+  </form>
+</div>
+
+<!-- Records table -->
+<div class="card glass records-card">
+  <h3>📋 Your Reports <span class="badge">{{ items|length }}</span></h3>
+  {% if items %}
+  <div class="records-table">
+    <div class="rt-head">
+      <div>Date</div>
+      <div>Title</div>
+      <div>Notes</div>
+      <div>File</div>
+      <div>Actions</div>
+    </div>
+    {% for it in items %}
+    <div class="rt-row">
+      <div class="rt-cell muted small">{{ it.date_taken or '—' }}</div>
+      <div class="rt-cell clip"><strong>{{ it.title or 'Untitled' }}</strong></div>
+      <div class="rt-cell muted small clip">{{ it.notes or '—' }}</div>
+      <div class="rt-cell">
+        <a class="link small" target="_blank"
+           href="{{ url_for('storage.file', category='prescription', filename=it.filename) }}">
+          Open ↗
+        </a>
+      </div>
+      <div class="rt-cell rt-actions">
+        <!-- Edit inline -->
+        <details class="edit-details">
+          <summary class="btn sm">✏️ Edit</summary>
+          <form class="edit-form form" method="post" action="{{ url_for('storage.edit', item_id=it.id) }}">
+            <input name="title" value="{{ it.title }}" placeholder="Title"/>
+            <input name="date_taken" type="date" value="{{ it.date_taken }}"/>
+            <textarea name="notes" rows="2" placeholder="Notes">{{ it.notes }}</textarea>
+            <button class="btn sm primary" type="submit">Save</button>
+          </form>
+        </details>
+        <form method="post" action="{{ url_for('storage.delete', item_id=it.id) }}" class="del-form">
+          <button class="btn sm danger" type="submit">🗑 Delete</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">📂</div>
+    <div class="empty-msg">No reports uploaded yet.</div>
+    <p class="muted small">Upload your first medical report using the form above.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/storage.js') }}"></script>
+{% endblock %}

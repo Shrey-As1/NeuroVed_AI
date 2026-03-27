@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Welcome banner -->
+<div class="dash-welcome" style="align-items: center; border:none; padding-bottom: 20px; margin-bottom: 24px;">
+  <div style="flex: 1;">
+    <h1 class="dash-greeting">Hello, {{ current_user.full_name.split()[0] if current_user.full_name else 'there' }} 👋</h1>
+    <p class="muted">How are you feeling today? Choose a module to get started.</p>
+    <div class="dash-date" style="display:inline-block; margin-top:12px;">{{ now.strftime('%A, %d %B %Y') if now else '' }}</div>
+  </div>
+  <div style="flex-shrink: 0; display:flex; justify-content:flex-end;">
+    <img src="{{ url_for('static', filename='img/healthy_brain_v2.png') }}" alt="Mental Wellness Healthy Brain" style="max-height: 160px; border-radius: 24px; box-shadow: var(--shadow-glass); transition: transform var(--transition);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"/>
+  </div>
+</div>
+
+<!-- Daily Quote -->
+<div class="quote-card" style="padding: 24px 40px;">
+  <div style="flex-shrink: 0; margin-right: 16px;">
+    <img src="{{ url_for('static', filename='img/mountain_river_2.png') }}" alt="Quiet River Mountains" style="max-height: 120px; border-radius: 16px;" />
+  </div>
+  <div class="quote-body">
+    <div class="quote-text">"{{ quote.text }}"</div>
+    <div class="quote-author">— {{ quote.author }}</div>
+  </div>
+</div>
+
+<!-- Module Cards -->
+<div class="module-grid">
+
+  <a class="module-card" href="{{ url_for('chat.page') }}">
+    <div class="mc-glow glow-purple"></div>
+    <div class="mc-icon">💬</div>
+    <div class="mc-content">
+      <div class="mc-title">Chatbot</div>
+      <div class="mc-desc">AI-powered emotional support with voice, charts &amp; crisis detection</div>
+    </div>
+    <div class="mc-arrow">→</div>
+  </a>
+
+  <a class="module-card" href="{{ url_for('storage.reports') }}">
+    <div class="mc-glow glow-teal"></div>
+    <div class="mc-icon">🗂️</div>
+    <div class="mc-content">
+      <div class="mc-title">Storage Bot</div>
+      <div class="mc-desc">Separate secure vaults for medical reports &amp; medicines</div>
+    </div>
+    <div class="mc-arrow">→</div>
+  </a>
+
+  <a class="module-card" href="{{ url_for('analyzer.page') }}">
+    <div class="mc-glow glow-amber"></div>
+    <div class="mc-icon">🔬</div>
+    <div class="mc-content">
+      <div class="mc-title">Analyzer</div>
+      <div class="mc-desc">OCR medicine &amp; report scanning with instant search links</div>
+    </div>
+    <div class="mc-arrow">→</div>
+  </a>
+
+  <a class="module-card" href="{{ url_for('hospitals.page') }}">
+    <div class="mc-glow glow-green"></div>
+    <div class="mc-icon">📍</div>
+    <div class="mc-content">
+      <div class="mc-title">Pincode Finder</div>
+      <div class="mc-desc">Nearest mental health hospitals by Indian pincode — no API key needed</div>
+    </div>
+    <div class="mc-arrow">→</div>
+  </a>
+
+</div>
+
+<!-- Gentle reminder -->
+<div class="reminder-bar">
+  <span class="reminder-icon">💙</span>
+  <span>This app supports reflection &amp; organization. It is <strong>not</strong> a replacement for a medical professional. If you're in crisis, please contact a helpline immediately.</span>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+// Animate module cards on load
+document.querySelectorAll('.module-card').forEach((card, i) => {
+  card.style.animationDelay = (i * 0.1) + 's';
+  card.classList.add('card-animate');
+});
+</script>
+{% endblock %}

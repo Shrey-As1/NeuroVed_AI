@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="card glass auth-card" style="text-align:center; padding:40px 32px;">
+    <div style="font-size:48px; margin-bottom:16px;">🗂️</div>
+    <h2>Storage Bot</h2>
+    <p class="muted">Choose which storage vault to open:</p>
+    <div class="row" style="justify-content:center; margin-top:20px;">
+      <a class="btn primary large" href="{{ url_for('storage.reports') }}">📋 Medical Reports</a>
+      <a class="btn large" href="{{ url_for('storage.medicines') }}">💊 Medicines</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="module-page-header">
+  <div>
+    <div class="breadcrumb"><a href="{{ url_for('dashboard') }}">Dashboard</a> › Analyzer</div>
+    <h2>🔬 Analyzer</h2>
+    <p class="muted">OCR-powered medical image analysis — extract text and find information</p>
+  </div>
+</div>
+
+<div class="analyzer-hub">
+
+  <a class="module-card analyzer-hub-card" href="{{ url_for('analyzer.medicine') }}">
+    <div class="mc-glow glow-amber"></div>
+    <div class="mc-icon big-icon">💊</div>
+    <div class="mc-content">
+      <div class="mc-title">Medicine Analyzer</div>
+      <div class="mc-desc">Upload a medicine image → OCR extracts text → detects medicine name → Google search link
+      </div>
+    </div>
+    <div class="mc-arrow">→</div>
+  </a>
+
+  <a class="module-card analyzer-hub-card" href="{{ url_for('analyzer.report') }}">
+    <div class="mc-glow glow-teal"></div>
+    <div class="mc-icon big-icon">📋</div>
+    <div class="mc-content">
+      <div class="mc-title">Report Analyzer</div>
+      <div class="mc-desc">Upload a prescription or report → OCR extracts text → auto-generate Google search keywords
+      </div>
+    </div>
+    <div class="mc-arrow">→</div>
+  </a>
+
+</div>
+
+<div class="card glass reminder-info">
+  <p class="muted small">
+    ⚠️ The Analyzer uses OCR to extract text from images.
+    Results are for informational purposes only. Always consult a qualified medical professional.
+  </p>
+</div>
+
+{% endblock %}

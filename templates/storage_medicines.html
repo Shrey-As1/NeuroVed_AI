@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="module-page-header">
+  <div>
+    <div class="breadcrumb"><a href="{{ url_for('dashboard') }}">Dashboard</a> › Storage Bot › Medicines</div>
+    <h2>💊 Medicine Storage</h2>
+    <p class="muted">Keep track of your medicines with images and notes</p>
+  </div>
+  <a href="{{ url_for('storage.reports') }}" class="btn">🗂️ View Reports →</a>
+</div>
+
+<!-- Upload form -->
+<div class="card glass upload-card">
+  <h3>📤 Upload New Medicine</h3>
+  <form class="form upload-form" method="post"
+        action="{{ url_for('storage.upload', category='medicine') }}"
+        enctype="multipart/form-data">
+    <div class="upload-grid">
+      <div class="field-group">
+        <label>Medicine Name / Title</label>
+        <input name="title" placeholder="e.g., Paracetamol 500mg"/>
+      </div>
+      <div class="field-group">
+        <label>Date</label>
+        <input name="date_taken" type="date"/>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Notes <span class="muted small">(dosage, frequency, doctor's instructions…)</span></label>
+      <textarea name="notes" rows="2" placeholder="e.g., Take 1 tablet twice daily after meals"></textarea>
+    </div>
+    <div class="field-group">
+      <label>Medicine Image <span class="muted small">(max 10 MB)</span></label>
+      <div class="file-drop-zone" id="dropZone">
+        <input name="file" type="file" id="medFile" accept="image/*" required/>
+        <div class="drop-label">
+          <span class="drop-icon">💊</span>
+          <span>Drag &amp; drop or <label for="medFile" class="link file-pick">browse</label></span>
+        </div>
+        <img id="medPreview" class="img-preview" style="display:none" alt="Preview"/>
+      </div>
+    </div>
+    <button class="btn primary" type="submit">Upload Medicine</button>
+  </form>
+</div>
+
+<!-- Records table -->
+<div class="card glass records-card">
+  <h3>💊 Your Medicines <span class="badge">{{ items|length }}</span></h3>
+  {% if items %}
+  <div class="records-table">
+    <div class="rt-head">
+      <div>Date</div>
+      <div>Name</div>
+      <div>Notes</div>
+      <div>Image</div>
+      <div>Actions</div>
+    </div>
+    {% for it in items %}
+    <div class="rt-row">
+      <div class="rt-cell muted small">{{ it.date_taken or '—' }}</div>
+      <div class="rt-cell clip"><strong>{{ it.title or 'Untitled' }}</strong></div>
+      <div class="rt-cell muted small clip">{{ it.notes or '—' }}</div>
+      <div class="rt-cell">
+        <a class="link small" target="_blank"
+           href="{{ url_for('storage.file', category='medicine', filename=it.filename) }}">
+          Open ↗
+        </a>
+      </div>
+      <div class="rt-cell rt-actions">
+        <details class="edit-details">
+          <summary class="btn sm">✏️ Edit</summary>
+          <form class="edit-form form" method="post" action="{{ url_for('storage.edit', item_id=it.id) }}">
+            <input name="title" value="{{ it.title }}" placeholder="Name"/>
+            <input name="date_taken" type="date" value="{{ it.date_taken }}"/>
+            <textarea name="notes" rows="2" placeholder="Notes">{{ it.notes }}</textarea>
+            <button class="btn sm primary" type="submit">Save</button>
+          </form>
+        </details>
+        <form method="post" action="{{ url_for('storage.delete', item_id=it.id) }}" class="del-form">
+          <button class="btn sm danger" type="submit">🗑 Delete</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">💊</div>
+    <div class="empty-msg">No medicines uploaded yet.</div>
+    <p class="muted small">Upload your first medicine image using the form above.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/storage.js') }}"></script>
+{% endblock %}
