@@ -55,23 +55,36 @@ def extract_text_from_image(image_path: str) -> tuple[str, str]:
         img = Image.open(image_path)
         prompt = "Extract all text from this image exactly as it appears. Do not add any extra commentary or formatting. If there is a medicine name or medical keywords, make sure they are spelled correctly."
         
-        models_to_try = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
+        import time
+        import random
+        
+        models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"]
         response = None
         last_error = None
         
         for model_name in models_to_try:
-            try:
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=[prompt, img]
-                )
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=[prompt, img]
+                    )
+                    break
+                except Exception as e:
+                    last_error = e
+                    error_str = str(e).lower()
+                    if any(code in error_str for code in ["429", "503", "500", "quota"]):
+                        if attempt < max_retries - 1:
+                            # Exponential backoff with jitter
+                            time.sleep((2 ** attempt) + random.uniform(0, 1))
+                            continue
+                        else:
+                            break # Exhausted retries for this model
+                    else:
+                        break # Not a transient error (like 404), skip this model
+            if response is not None:
                 break
-            except Exception as e:
-                last_error = e
-                if "429" in str(e) or "quota" in str(e).lower():
-                    continue
-                else:
-                    raise e
                     
         if response is None:
             raise last_error or Exception("Failed to get a response from any model.")
@@ -141,27 +154,39 @@ def extract_report_keywords(ocr_text: str) -> dict:
             f"Text:\n{ocr_text}"
         )
         
-        models_to_try = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
+        import time
+        import random
+        
+        models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"]
         response = None
         last_error = None
         
         for model_name in models_to_try:
-            try:
-                # Ask Gemini to natively return JSON
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=prompt,
-                    config=genai.types.GenerateContentConfig(
-                        response_mime_type="application/json",
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    # Ask Gemini to natively return JSON
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=prompt,
+                        config=genai.types.GenerateContentConfig(
+                            response_mime_type="application/json",
+                        )
                     )
-                )
+                    break
+                except Exception as e:
+                    last_error = e
+                    error_str = str(e).lower()
+                    if any(code in error_str for code in ["429", "503", "500", "quota"]):
+                        if attempt < max_retries - 1:
+                            time.sleep((2 ** attempt) + random.uniform(0, 1))
+                            continue
+                        else:
+                            break
+                    else:
+                        break # Break to next model on 404 or non-transient
+            if response is not None:
                 break
-            except Exception as e:
-                last_error = e
-                if "429" in str(e) or "quota" in str(e).lower():
-                    continue
-                else:
-                    raise e
                     
         if response is None:
             raise last_error or Exception("Failed to get a response from any model.")

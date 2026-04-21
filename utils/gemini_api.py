@@ -33,22 +33,34 @@ def ask_gemini(prompt: str) -> str:
     )
     full_prompt = f"{system_context}\n\nUser: {prompt}"
     
-    models_to_try = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-1.5-pro"]
+    import time
+    import random
+    
+    models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-pro"]
     response = None
     
     for model_name in models_to_try:
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=full_prompt
-            )
-            if response is not None:
-                return response.text.strip()
-        except Exception as e:
-            if "429" in str(e) or "quota" in str(e).lower():
-                continue
-            else:
-                break
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=full_prompt
+                )
+                if response is not None:
+                    return response.text.strip()
+            except Exception as e:
+                error_str = str(e).lower()
+                if any(code in error_str for code in ["429", "503", "500", "quota"]):
+                    if attempt < max_retries - 1:
+                        time.sleep((2 ** attempt) + random.uniform(0, 1))
+                        continue
+                    else:
+                        break # Exhausted retries for this model
+                else:
+                    break # Break out of retries for non-transient errors
+        if response is not None:
+            break
                 
     # If all models failed or a non-quota error occurred, clear the cache
     global _model
