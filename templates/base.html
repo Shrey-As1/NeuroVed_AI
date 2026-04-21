@@ -22,7 +22,7 @@
   <!-- Top Bar -->
   <header class="topbar">
     <a class="brand" href="{{ url_for('landing') }}">
-      <div class="brand-mark">🌸</div>
+      <div class="brand-mark"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="height: 70px; width: 70px; border-radius: 5px;"></div>
       <div>
         <div class="brand-title">NeuroVed <span class="brand-ai">AI</span></div>
         <div class="brand-sub">Gentle support · Organized care</div>
@@ -79,7 +79,7 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <span class="footer-brand">🌸 <strong>NeuroVed AI</strong> &nbsp;·&nbsp; 2026</span>
+      <span class="footer-brand"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" style="height: 32px; width: 32px; vertical-align: middle; margin-right: 4px; border-radius: 4px;"> <strong>NeuroVed AI</strong> &nbsp;·&nbsp; 2026</span>
       <span class="footer-note">This app supports reflection. It is not a substitute for professional medical advice.</span>
     </div>
   </footer>
